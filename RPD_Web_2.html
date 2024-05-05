@@ -1,0 +1,344 @@
+<!DOCTYPE html> <!-- Define o tipo de documento como HTML5 -->
+<html lang="pt-BR"> <!-- Inicia o documento HTML e define o idioma como português do Brasil -->
+<head>
+<meta charset="UTF-8"> <!-- Define a codificação de caracteres para UTF-8 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Garante uma boa visualização em dispositivos móveis -->
+<title>Sistema de Captura de Pensamentos Disfuncionais</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Link para o CSS do Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> <!-- Script para o jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script> <!-- Script para a biblioteca jsPDF -->
+</head>
+<body>
+<div class="container"> <!-- Container principal do Bootstrap para alinhar o conteúdo -->
+  <h1 class="text-center mt-5">Captura de Pensamentos Disfuncionais</h1> <!-- Título centralizado da página -->
+  
+  <!-- Barra de progresso para mostrar o número da pergunta atual -->
+  <div id="progress" class="text-center mb-4">Pergunta <span id="current-step">1</span> de <span id="total-steps">17</span></div> 
+
+  <form id="questionnaire">
+
+    <!-- Pergunta 1 -->
+    <div class="question" id="question1">
+      <h3>Algum evento real ou fluxo de pensamentos, devaneio ou recordação que levou à emoção desagradável?</h3>
+       <small class="form-text text-muted">
+          <p>O que está passando pela sua cabeça neste momento?</p>
+          <p>O pensamento lhe traz algum desconforto?</p>
+          <p>Se sim, vamos estudá-lo enquanto ele ainda está vívido na mente. Aperte "Próximo" para continuar.</p>
+      </small>      
+      <button type="button" class="btn btn-primary next">Próximo</button>
+    </div>
+     <!-- Pergunta 2 -->
+    <div class="question" id="question2" style="display:none;">
+      <h3>Qual o evento real ou fluxo de pensamentos, devaneio ou recordação que levou à emoção desagradável?</h3>
+      <textarea class="form-control" required></textarea> 
+      <small class="form-text text-muted">
+          <p>O pensamento, devaneio ou recordação é a porta de entrada da emoção, portanto verbaliza-lo é fundamental para compreender.</p>
+          <p>Não precisa escrever um texto complexo, fale o suficiente para descrever a circunstância.</p>
+          <p>Ex.: "Eu preciso praticar exercícios fisicos, mas existem pessoas no recinto me olhando".</p>
+      </small>  
+    </div>
+    <!-- Pergunta 3 -->
+    <div class="question" id="question3" style="display:none;">
+      <h3>Qual a data e hora do pensamento desagradável?</h3>
+       <textarea class="form-control" required></textarea> 
+
+          <small class="form-text text-muted">
+              <p>O marco temporal do pensamento é importante para que se possa medir o impacto dele na emoção no decorrer do tempo.</p>
+              <p>Sempre vai existir um antes e depois para auferir o quanto conseguimos ressignificar pensamentos.</p>
+          </small> 
+    </div> 
+    <!-- Pergunta 4 -->
+    <div class="question" id="question4" style="display:none;">
+      <h3>Que sensações físicas angustiantes (se é que houve) você teve?</h3>
+      <textarea class="form-control" required></textarea>
+          <small class="form-text text-muted">
+              <p>É comum sensações físicas em respostas a pensamentos. Anotá-las vai ajudar o terapeuta na análise.</p>
+              <p>Ex.: Frio na barriga, arrepios, dor no peito, falta de ar, etc.</p>
+          </small>
+    </div>
+    <!-- Pergunta 5 -->
+    <div class="question" id="question5" style="display:none;">
+      <h3>Que pensamento(s) e/ou imagem(ns) passou(aram) na sua cabeça?</h3>
+      <textarea class="form-control" required></textarea>
+
+           <small class="form-text text-muted">
+              <p>Os <strong>pensamentos automáticos</strong> são aqueles que aparecem na mente sem controle voluntário e são precedidos ou seguidos de emoções.</p>
+              <p>Vamos trabalhar agora com suposições, interpretação da realidade proriamente ditos.</p>
+              <p>Ex.: "Eu preciso praticar exercícios fisicos, mas existem pessoas no recinto me olhando."(pensamento inicial)</p>
+              <p>"as pessoas me julgam", "vão me provocar", "as pessoas não gostam de mim"</p>
+           </small>
+    </div>
+    <!-- Pergunta 6 -->
+    <div class="question" id="question6" style="display:none;">
+      <h3>Quanto você acreditou em cada um naquele momento? (0-100%)</h3>
+      <textarea class="form-control" required></textarea>
+           <small class="form-text text-muted">
+              <p>Não é uma medida exata. 100% a 0% são os extremos.</p>
+              <p>Ex.: Eu acredito que as pessoas me julgam (eu acho 100%)</p>
+              <p>Ex.: Eu acredito as pessoas não gostam de mim (eu acho 50%)</p>
+              <p>Ex.: Eu acredito as pessoas vão me provocar (eu acho 30%)</p>
+           </small>
+    </div>
+    <!-- Pergunta 7 -->
+    <div class="question" id="question7" style="display:none;">
+      <h3>Que emoção(ões) (triste/ ansioso/ irritado/ etc.) você sentiu naquele momento?</h3>
+      <textarea class="form-control" required></textarea> 
+           <small class="form-text text-muted">
+              <p>Emoções são usualmente substantivos abstratos. O desafio é identificar quais deles está atuando agora.</p> 
+              <p><strong>Crença nuclear:</strong> é o que você acredita sobre si mesmo, os outros, o mundo e o futuro, baseado nas suas experiências na infância ou adolescência. Ela influencia como você interpreta as situações que vive e gera pensamentos automáticos.</p> 
+              <p><strong>Pensamento:</strong> é o que você pensa sobre a situação que está vivendo, de acordo com a sua crença nuclear. Ele pode ser distorcido, exagerado, negativo ou personalizado, e não refletir a realidade. Ele gera sentimentos.</p> 
+              <p><strong>Sentimento:</strong> é o que você sente em relação ao seu pensamento sobre a situação. Ele pode ser uma emoção (como medo, raiva, tristeza, amor, nojo, alegria ou surpresa) ou um sentimento (quando você pensa sobre a emoção). Ele gera comportamentos.</p> 
+              <p><strong>Comportamento:</strong> é o que você faz ou deixa de fazer por causa do seu sentimento sobre a situação. Ele pode ter consequências que reforçam ou desafiam a sua crença nuclear.</p>             
+           </small>
+    </div>
+    <!-- Pergunta 8 -->
+    <div class="question" id="question8" style="display:none;">
+      <h3>Qual a intensidade da emoção (0-100%)?</h3>
+      <textarea class="form-control" required></textarea> 
+
+           <small class="form-text text-muted">
+              <p>Não é uma medida exata. 100% a 0% são os extremos.</p>               
+              
+           </small>
+    </div>
+    <!-- Pergunta 9 -->
+    <div class="question" id="question9" style="display:none;">
+      <h3>(Opcional) Que distorção cognitiva você fez?</h3>
+      <textarea class="form-control" required></textarea> 
+           <small class="form-text text-muted">
+              <p>LEITURA MENTAL: Eu sei o que a pessoa está pensando e ela sabe o que estou pensando.</p>
+              <p>PREMONIÇÃO: Antecipo o futuro, sem um embasamento concreto.</p>
+              <p>CATASTROFIZAÇÃO: Penso o pior e ignoro as outras probabilidades do que vai acontecer.</p>
+              <p>ROTULAÇÃO: Rotulo a mim mesmo e pessoas, atribuindo traços negativos.</p>
+              <p>NEGATIVAÇÃO: Não dou valor a traços positivos meus, ignorando-os.</p>
+              <p>FILTRO NEGATIVO: Presto atenção so nos detalhes negativos.</p>
+              <p>SUPERGENERALIZAÇÃO: Padrões globais negativos, com base em um único incidente.</p>
+              <p>DEVERIA: Interpreto como as coisas deveriam ser, no meu critério, não como elas são.</p>
+              <p>PERSONALIZAÇÃO: Tudo é culpa minha, os outros não tem culpa nenhuma.</p>
+              <p>DESPERSONALIZAÇÃO: Tudo é culpa dos outros, eu não tenho responsabilidae de mudar.</p>
+              <p>SUPER REMORSO: Viver no que poderia ter sido no passado, em vez de olhar para o futuro.</p>
+           </small>
+    </div>
+
+
+    <!-- Pergunta 10 -->
+    <div class="question" id="question10" style="display:none;">
+      <h3>Após o pensamento e o sentimento, qual foi o comportamento, ação, diante da situação?</h3>
+      <textarea class="form-control" required></textarea> 
+
+           <small class="form-text text-muted">              
+              <p>Ex.: "Eu preciso praticar exercícios fisicos, mas existem pessoas no recinto me olhando."(pensamento inicial)</p>
+              <p>"As pessoas me julgam", "vão me provocar", "as pessoas não gostam de mim. (pensamentos automáticos)"</p>
+              <p>"Sinto vergonha", "sinto medo". (sentimentos)"</p>
+              <p>"Não praticarei exercícios físicos na academia". (comportamento)"</p>
+
+           </small>
+    </div>
+
+    <!-- Pergunta 11 -->
+    <div class="question" id="question11" style="display:none;">
+      <h3>Baseado nas suas respostas anteriores, escolha um pensamento automático para analisar. Qual é a evidência de que o pensamento automático é verdadeiro?</h3>
+     <textarea class="form-control" required></textarea> 
+           <small class="form-text text-muted">
+              <p>Eleja o pensamento automático que tem maior potencial de lhe fazer mal.</p>
+              <p>Quanto você acredita em cada resposta? (0 a 100%)</p>  
+                           
+           </small>   
+    </div>
+
+    <!-- Pergunta 12 -->
+    <div class="question" id="question12" style="display:none;">
+      <h3>Há uma explicação alternativa para o pensamento automático?</h3>
+     <textarea class="form-control" required></textarea> 
+           <small class="form-text text-muted">
+              <p>Quanto você acredita em cada resposta? (0 a 100%)</p>
+              <p>Existe alguma situação semelhante que aconteceu com você que dispertou outra interpretação?</p>              
+           </small>   
+    </div>
+
+    <!-- Pergunta 13 -->
+    <div class="question" id="question13" style="display:none;">
+      <h3>O que é o PIOR que poderia acontecer? Se PIOR, você poderia superar isso? O que é o MELHOR que poderia acontecer? Qual o resultado mais REALISTA?</h3>
+     <textarea class="form-control" required></textarea> 
+           <small class="form-text text-muted">
+              <p>Quanto você acredita em cada resposta? (0 a 100%)</p>              
+           </small>   
+    </div>
+
+    <!-- Pergunta 14 -->
+    <div class="question" id="question14" style="display:none;">
+      <h3>Qual é o efeito de você acreditar no pensamento automático? Qual poderia ser o efeito de você mudar o seu pensamento?</h3>
+     <textarea class="form-control" required></textarea> 
+           <small class="form-text text-muted">
+              <p>Quanto você acredita em cada resposta? (0 a 100%)</p>             
+           </small>   
+    </div>
+
+    <!-- Pergunta 15 -->
+    <div class="question" id="question15" style="display:none;">
+      <h3>Se uma pessoa muito querida por você estivesse na mesma situaçã e tivesse esse mesmo pensamento automático, o que você diria para ela?</h3>
+     <textarea class="form-control" required></textarea> 
+           <small class="form-text text-muted">
+              <p>Eleja o pensamento automático que tem maior potencial de lhe fazer mal.</p>              
+           </small>   
+    </div>
+
+     <!-- Pergunta 16 -->
+    <div class="question" id="question16" style="display:none;">
+      <h3> Que emoção(ões) você sente agora? Qual a intensidade dessa emoção(0-100%)?</h3>
+     <textarea class="form-control" required></textarea> 
+           <small class="form-text text-muted">
+              <p> Novas emoções, positivas e/ou negativas e a intensidade com que as sente.</p>              
+           </small>   
+    </div>
+
+     <!-- Pergunta 17 -->
+    <div class="question" id="question17" style="display:none;">
+      <h3>O que você vai fazer (ou fez)?</h3>
+     <textarea class="form-control" required></textarea> 
+           <small class="form-text text-muted">
+              <p>Qual a conclusão você chegou? O que você vai fazer com relação à situação daqui pra frente?</p>              
+           </small>   
+    </div>
+    </form>
+        <button id="restart" class="btn btn-warning" style="display:none;">Reiniciar</button>
+        <button id="edit-previous" class="btn btn-secondary" style="display:none;">Anterior</button>
+        <button id="edit-next" class="btn btn-info" style="display:none;">Próximo</button>
+        <button id="generate-pdf" class="btn btn-success" style="display:none;">Gerar Relatório</button>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  var totalSteps = $('.question').length;
+  $('#total-steps').text(totalSteps);
+  var currentStep = 1;
+
+
+  // Função para navegar para a próxima pergunta
+  function goToNextQuestion() {
+    var nextStep = currentStep + 1;
+    var nextQuestion = '#question' + nextStep;
+    if ($(nextQuestion).length) {
+      $('.question').hide();
+      $(nextQuestion).show();
+      currentStep = nextStep;
+      $('#current-step').text(currentStep);
+      $('#edit-previous').show();
+      if (currentStep === totalSteps) {
+        $('#edit-next').hide();
+        $('#generate-pdf').show();
+      } else {
+        $('#edit-next').show();
+      }
+    }
+  }
+
+
+  // Função para navegar para a pergunta anterior
+  function goToPreviousQuestion() {
+    var prevStep = currentStep - 1;
+    var prevQuestion = '#question' + prevStep;
+    if ($(prevQuestion).length) {
+      $('.question').hide();
+      $(prevQuestion).show();
+      currentStep = prevStep;
+      $('#current-step').text(currentStep);
+      $('#generate-pdf').hide();
+      if (currentStep < totalSteps) {
+        $('#edit-next').show();
+      }
+    }
+  }
+
+  // Evento de clique para o botão 'Próximo'
+  $('.next').click(function() {
+    goToNextQuestion();
+  });
+
+  // Evento de clique para o botão 'Anterior'
+  $('#edit-previous').click(function() {
+    goToPreviousQuestion();
+  });
+
+
+  // Evento de clique para o botão 'Próximo' após editar a pergunta anterior
+  $('#edit-next').click(function() {
+    goToNextQuestion();
+  });
+
+  // Função para reiniciar o questionário
+  function reiniciarQuestionario() {
+    $('.question').hide();
+    $('#question1').show();
+    $('#questionnaire').trigger('reset');
+    $('#current-step').text('1');
+    $('#edit-previous').hide();
+    $('#edit-next').hide();
+    $('#generate-pdf').hide();
+    $('#restart').hide();
+    currentStep = 1;
+  };
+
+
+  // Evento de clique para o botão 'Reiniciar'
+  $('#restart').click(function() {
+    reiniciarQuestionario();
+  });
+
+
+ // Evento de clique para o botão 'Gerar Relatório'
+  $('#generate-pdf').click(function() {
+    var doc = new jspdf.jsPDF();
+    var yPosition = 10; // Posição inicial no eixo Y para o texto no PDF
+
+    var pageWidth = doc.internal.pageSize.getWidth(); // Largura da página
+    var margin = 15; // Margem esquerda e direita
+    var maxLineWidth = pageWidth - (margin * 2); // Largura máxima do texto
+
+ 
+    $('#questionnaire .question').each(function(index, element) {
+      if (index < currentStep) { // Certifique-se de incluir apenas as perguntas respondidas
+        var question = $(element).find('h3').text();
+        var answer = $(element).find('textarea').val() || 'Resposta não fornecida'; // Adiciona um valor padrão caso a resposta esteja vazia
+
+
+        // Divide o texto para que não ultrapasse as margens
+        var splitQuestion = doc.splitTextToSize(question, maxLineWidth);
+        var splitAnswer = doc.splitTextToSize(answer, maxLineWidth);
+
+
+        // Verifica se é necessário adicionar uma nova página
+        if (yPosition + (splitQuestion.length + splitAnswer.length) * 10 >= doc.internal.pageSize.getHeight()){ // 280 é um valor aproximado para a altura da página
+          doc.addPage();
+          yPosition = 10; // Reseta a posição Y para o topo da nova página
+        }
+
+        // Adiciona a pergunta e a resposta no PDF
+        doc.setFont('helvetica', 'bold');
+        splitQuestion.forEach(function(line) {
+            doc.text(line, margin, yPosition);
+            yPosition += 10; // Incrementa a posição Y para a próxima linha
+        });
+
+        doc.setFont('helvetica', 'normal');
+          splitAnswer.forEach(function(line) {
+        doc.text(line, margin, yPosition);
+          yPosition += 10; // Incrementa a posição Y para a próxima linha
+        });
+
+          yPosition += 10; // Adiciona um espaço extra antes da próxima pergunta
+      }
+    });
+
+    doc.save('relatorio.pdf');
+    reiniciarQuestionario();
+ });
+
+  // Outros eventos de clique
+  // ...
+});
+
+</script>
+</body>
+</html>
